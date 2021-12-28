@@ -3,9 +3,9 @@ const sequelize = require('../config/connection');
 // create our Post model
 
 // create fields/columns for Blog Post model
-class BPost extends Model {}
+class Post extends Model {}
 
-BPost.init(
+Post.init(
   {
     id: {
       type: DataTypes.INTEGER,
@@ -33,8 +33,8 @@ BPost.init(
     sequelize,
     freezeTableName: true,
     underscored: true,
-    modelName: 'bpost'
+    modelName: 'post'
   }
 );
 
-module.exports = BPost;
+module.exports = Post;
