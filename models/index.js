@@ -3,35 +3,36 @@ const Post = require('./Post');
 const User = require('./User');
 const Comment = require('./Comment');
 
-// create associations
-User.hasMany(Post, {
-    foreignKey: 'user_id'
-  });
-  
+// create associations- verify on deletes working correctly
 Post.belongsTo(User, {
     foreignKey: 'user_id',
-    onDelete: 'SET NULL'
   });
-
-Comment.belongsTo(User, {
+  
+User.hasMany(Post, {
     foreignKey: 'user_id',
-    onDelete: 'SET NULL'
+    onDelete: "CASCADE"
   });
-
 
 Comment.belongsTo(Post, {
     foreignKey: 'post_id',
-    onDelete: 'SET NULL'
-  });
-
-User.hasMany(Comment, {
-    foreignKey: 'user_id',
-    onDelete: 'SET NULL'
   });
 
 Post.hasMany(Comment, {
     foreignKey: 'post-id',
+    onDelete: "CASCADE"
 });
+
+Comment.belongsTo(User, {
+    foreignKey: 'user_id',
+  });
+
+
+User.hasMany(Comment, {
+    foreignKey: 'user_id',
+    onDelete: 'CASCADE'
+  });
+
+
 
 
 

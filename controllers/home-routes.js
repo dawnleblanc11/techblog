@@ -8,8 +8,8 @@ router.get('/', (req, res) => {
   Post.findAll({
     attributes: [
       'id',
-      'post_text',
       'title',
+      'post_text',
       'created_at'
     ],
     include: [
@@ -28,8 +28,9 @@ router.get('/', (req, res) => {
     ]
   })
     .then(dbPostData => {
-      const posts = dbPostData.map(post => post.get({ plain: true }));
-
+      // serialize the entire array of posts into readable format
+        const posts = dbPostData.map(post => post.get({ plain: true }));
+        // pass a single post object into the homepage template
       res.render('homepage', {
         posts,
         loggedIn: req.session.loggedIn
@@ -41,7 +42,7 @@ router.get('/', (req, res) => {
     });
 });
 
-// get single blog post
+// rendering one post to the single post page
 router.get('/post/:id', (req, res) => {
   Post.findOne({
     where: {
@@ -49,8 +50,8 @@ router.get('/post/:id', (req, res) => {
     },
     attributes: [
       'id',
-      'post_text',
       'title',
+      'post_text',
       'created_at'
     ],
     include: [
@@ -73,9 +74,9 @@ router.get('/post/:id', (req, res) => {
         res.status(404).json({ message: 'No blog post found with this id' });
         return;
       }
-
+      // serialize the data
       const post = dbPostData.get({ plain: true });
-
+      // pass data to template
       res.render('single-blogpost', {
         post,
         loggedIn: req.session.loggedIn
@@ -86,7 +87,7 @@ router.get('/post/:id', (req, res) => {
       res.status(500).json(err);
     });
 });
-
+// render the loging page
 router.get('/login', (req, res) => {
   if (req.session.loggedIn) {
     res.redirect('/');
@@ -95,5 +96,50 @@ router.get('/login', (req, res) => {
 
   res.render('login');
 });
+
+// render the signup page
+router.get("/signup", (req, res) => {
+    res.render("signup");
+  });
+
+router.get("/posts-comments", (req, res) => {
+    Post.findOne({
+      where: {
+        id: req.params.id,
+      },
+      attributes: ["id", "content", "title", "created_at"],
+      include: [
+        {
+          model: Comment,
+          attributes: ["id", "comment_text", "post_id", "user_id", "created_at"],
+          include: {
+            model: User,
+            attributes: ["username"],
+          },
+        },
+        {
+          model: User,
+          attributes: ["username"],
+        },
+      ],
+    })
+      .then((dbPostData) => {
+        if (!dbPostData) {
+          res.status(404).json({ message: "No post found with this id" });
+          return;
+        }
+  
+        // serialize the data
+        const post = dbPostData.get({ plain: true });
+  
+        // pass data to template
+        res.render("posts-comments", { post, loggedIn: req.session.loggedIn });
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).json(err);
+      });
+  });
+  
 
 module.exports = router;

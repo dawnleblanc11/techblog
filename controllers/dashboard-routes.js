@@ -52,16 +52,16 @@ router.get('/edit/:id', withAuth, (req, res) => {
     ],
     include: [
       {
+        model: User,
+        attributes: ['username']
+      },
+      {
         model: Comment,
         attributes: ['id', 'comment_text', '_id', 'user_id', 'created_at'],
         include: {
           model: User,
           attributes: ['username']
         }
-      },
-      {
-        model: User,
-        attributes: ['username']
       }
     ]
   })
@@ -81,5 +81,9 @@ router.get('/edit/:id', withAuth, (req, res) => {
       res.status(500).json(err);
     });
 });
+// redirecting users to sign in page once they sign up
+router.get("/new", (req, res) => {
+    res.render("new-post");
+  });
 
 module.exports = router;

@@ -1,5 +1,4 @@
 const router = require('express').Router();
-const sequelize = require('../../config/connection');
 const { User, Post, Comment } = require('../../models');
 
 // get all users
@@ -13,7 +12,7 @@ router.get('/', (req, res) => {
       res.status(500).json(err);
     });
 });
-
+// Get one user
 router.get('/:id', (req, res) => {
   User.findOne({
     attributes: { exclude: ['password'] },
@@ -47,7 +46,7 @@ router.get('/:id', (req, res) => {
       res.status(500).json(err);
     });
 });
-
+// create a new user
 router.post('/', (req, res) => {
   // expects {username: 'Lernantino', email: 'lernantino@gmail.com', password: 'password1234'}
   User.create({
@@ -69,7 +68,7 @@ router.post('/', (req, res) => {
       res.status(500).json(err);
     });
 });
-
+// user login
 router.post('/login', (req, res) => {
   // expects {email: 'lernantino@gmail.com', password: 'password1234'}
   User.findOne({
@@ -98,7 +97,7 @@ router.post('/login', (req, res) => {
     });
   });
 });
-
+// user logoout
 router.post('/logout', (req, res) => {
   if (req.session.loggedIn) {
     req.session.destroy(() => {
@@ -132,7 +131,7 @@ router.put('/:id', (req, res) => {
       res.status(500).json(err);
     });
 });
-
+// delete a user
 router.delete('/:id', (req, res) => {
   User.destroy({
     where: {

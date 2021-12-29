@@ -23,21 +23,14 @@ User.init(
       type: DataTypes.STRING,
       allowNull: false
     },
-    email: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: true,
-      validate: {
-        isEmail: true
-      }
-    },
+    // removed email since none in mockup
     password: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
         len: [4]
       }
-    }
+    },
   },
   {
     hooks: {

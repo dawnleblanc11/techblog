@@ -1,9 +1,8 @@
 const router = require('express').Router();
-const sequelize = require('../../config/connection');
 const { Post, User, Comment } = require('../../models');
 const withAuth = require('../../utils/auth');
 
-// get all users
+// get all posts
 router.get('/', (req, res) => {
   console.log('======================');
   Post.findAll({
@@ -13,7 +12,12 @@ router.get('/', (req, res) => {
       'title',
       'created_at'
     ],
+    order: [["created_at", "DESC"]],
     include: [
+      {
+        model: User,
+        attributes: ['username']
+      },
       {
         // comment data not appearing in Insomnia ???
         model: Comment,
@@ -22,10 +26,6 @@ router.get('/', (req, res) => {
           model: User,
           attributes: ['username']
         }
-      },
-      {
-        model: User,
-        attributes: ['username']
       }
     ]
   })
@@ -35,7 +35,7 @@ router.get('/', (req, res) => {
       res.status(500).json(err);
     });
 });
-
+// get one post
 router.get('/:id', (req, res) => {
   Post.findOne({
     where: {
@@ -49,16 +49,16 @@ router.get('/:id', (req, res) => {
     ],
     include: [
       {
+        model: User,
+        attributes: ['username']
+      },
+      {
         model: Comment,
         attributes: ['id', 'comment_text', 'post_id', 'user_id', 'created_at'],
         include: {
           model: User,
           attributes: ['username']
         }
-      },
-      {
-        model: User,
-        attributes: ['username']
       }
     ]
   })
@@ -75,7 +75,7 @@ router.get('/:id', (req, res) => {
     });
 });
 
-
+// create a post
   // expects {title: 'My second blog post', post_text: 'bla bla blah', user_id: 1}
 router.post('/', withAuth, (req, res) => {
   Post.create({
@@ -90,11 +90,12 @@ router.post('/', withAuth, (req, res) => {
     });
 });
 
-
+// update a post title or text
 router.put('/:id', withAuth, (req, res) => {
   Post.update(
     {
-      title: req.body.title
+      title: req.body.title,
+      post_text: req.body.post_text,
     },
     {
       where: {
@@ -114,7 +115,7 @@ router.put('/:id', withAuth, (req, res) => {
       res.status(500).json(err);
     });
 });
-
+// delete a post
 router.delete('/:id', withAuth, (req, res) => {
   console.log('id', req.params.id);
   Post.destroy({
