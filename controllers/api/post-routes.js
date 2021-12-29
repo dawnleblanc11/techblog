@@ -90,6 +90,7 @@ router.post('/', withAuth, (req, res) => {
     });
 });
 
+// tested in insomnia- works without authority
 // update a post title or text
 router.put('/:id', withAuth, (req, res) => {
   Post.update(
