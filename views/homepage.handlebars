@@ -1,9 +1,9 @@
 <article class="post-list">
 
     {{#each posts as |post| }}
-    <li>
+    
     {{> post-info post}}
-    </li>
+    {{> comments post.comments}}
     
     {{else}}
 <h3 >there are currently no posts</h3>

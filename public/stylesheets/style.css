@@ -68,6 +68,22 @@
     box-shadow: 3px 3px var(--dark);
     transform: translate(-1px, -1px);
   }
+
+  .delete-post-btn {
+    font-size: 1.3rem;
+    text-decoration:none;
+    padding: 6px 5px;
+    width: 100%;
+    display: block;
+    margin: 5px 0;
+    border-radius: var(--border-radius);
+    color: red;
+    border: none;
+    outline: none;
+    background-color: var(--light-dark);
+    box-shadow: 3px 3px var(--dark);
+    transform: translate(-1px, -1px);
+  }
   
    .btn:hover {
     color: var(--primary);

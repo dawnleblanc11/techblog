@@ -21,7 +21,6 @@ User.init(
     username: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true
     },
     // removed email since none in mockup
     password: {
