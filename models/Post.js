@@ -17,14 +17,15 @@ Post.init(
       type: DataTypes.STRING,
       allowNull: false
     },
-    post_text: {
+    content: {
       type: DataTypes.TEXT,
       allowNull: false,
     },
+    // user_id is key and how the tables connect
     user_id: {
       type: DataTypes.INTEGER,
       references: {
-        model: 'user',
+        modelName: 'user',
         key: 'id'
       }
     }

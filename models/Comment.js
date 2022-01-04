@@ -7,7 +7,6 @@ Comment.init(
   {
     id: {
       type: DataTypes.INTEGER,
-      allowNull: false,
       primaryKey: true,
       autoIncrement: true
     },
@@ -18,15 +17,19 @@ Comment.init(
         len: [1]
       }
     },
+    // add user if to link to user table
     user_id: {
       type: DataTypes.INTEGER,
+      allowNull: false,
       references: {
-        model: 'user',
+        modelName: 'user',
         key: 'id'
       }
     },
+    // add post id to link to post table
     post_id: {
       type: DataTypes.INTEGER,
+      allowNull: false,
       references: {
         model: 'post',
         key: 'id'

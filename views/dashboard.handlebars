@@ -1,16 +1,19 @@
+{{#if loggedIn}}
+  <button type="submit" class="btn"><a class="link" href="/dashboard/new">+ New Post</a></button>
 {{#if posts.length}}
 <section>
-  <h2>Your Posts</h2>
-  <ol>
+  <h2 class="section-title">Your Posts</h2>
+  <ol class="post-ol">
     {{#each posts as |post|}}
-      {{> dashboard-post-info post}}
-      <a href="/dashboard/edit/{{post.id}}"> Edit post</a>
+    <li class="poster">
+        <div class="single-post">
+            {{> post-info post}}
+            <a href="/dashboard/edit/{{post.id}}" class="edit-link">Edit post</a>
+        </div>
+    </li>
     {{/each}}
   </ol>
 </section>
 {{/if}}
-
-<button type="submit" class="btn"><a class="link" href="/dashboard/new">+ New Post</a></button>
-
 <script src="/javascript/add-post.js"></script>
-<script src="/javascript/edit-post.js"></script>
+{{/if}}

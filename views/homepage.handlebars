@@ -1,7 +1,11 @@
-<article class="post">
+<article class="post-list">
 
     {{#each posts as |post| }}
+    <li>
     {{> post-info post}}
-    {{/each}}
-
+    </li>
+    
+    {{else}}
+<h3 >there are currently no posts</h3>
+{{/each}}
 </article>
