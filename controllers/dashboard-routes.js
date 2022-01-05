@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const sequelize = require('../config/connection');
 const { Post, User, Comment } = require('../models');
+const { truncate } = require('../models/User');
 const withAuth = require('../utils/auth');
 
 // get all posts for dashboard
@@ -83,7 +84,12 @@ router.get('/edit/:id', withAuth, (req, res) => {
 });
 // redirecting users to sign in page once they sign up
 router.get("/new", (req, res) => {
+  try {
     res.render("add-post");
+  } catch (error) {
+    res.json(error)
+  }
+   
   });
 
 module.exports = router;

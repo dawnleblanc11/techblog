@@ -1,24 +1,29 @@
 {{#if loggedIn}}
   </section>
-  <h2 class="section-title:">Create New Posts</h2>
-             <button type="submit" class="btn"><a class="link" href="/dashboard/new">+ New Post</a></button>
+             <button type="submit" class="btn"><a class="link" href="/dashboard/new">Create <b>NEW</b> Posts</a></button>
+<br>
+<br>
+<br>
 </section>
 {{#if posts.length}}
 <section>
-  <h2 class="section-title">Your Posts</h2>
-  <ul class="post-ol">
+  <h2>Edit or Delete Your Current Posts</h2>
+  <ul>
     {{#each posts as |post|}}
         <div class="single-post">
             <div>
             {{> post-info post}}
             </div>
-            <a href="/dashboard/edit/{{post.id}}" class="edit-link">Edit post</a>
+            <a href="/dashboard/edit/{{post.id}}" class="edit-link">Edit Post</a>
+            <br>
+            <br>
         </div>
     
     {{/each}}
   </ul>
 
 {{/if}}
-<script src="/javascript/add-post.js"></script>
 {{/if}}
+{{!-- <script src="/javascript/add-post.js"></script> --}}
+
 
