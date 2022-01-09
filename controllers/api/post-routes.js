@@ -1,90 +1,80 @@
-const router = require('express').Router();
-const { Post, User, Comment } = require('../../models');
-const withAuth = require('../../utils/auth');
+const router = require("express").Router();
+const { Post, User, Comment } = require("../../models");
+const withAuth = require("../../utils/auth");
 
 // get all posts
-router.get('/', (req, res) => {
-  console.log('======================');
+router.get("/", (req, res) => {
+  console.log("======================");
   Post.findAll({
-    attributes: [
-      'id',
-      'content',
-      'title',
-      'created_at'
-    ],
+    attributes: ["id", "content", "title", "created_at"],
     order: [["created_at", "DESC"]],
     include: [
       {
         model: User,
-        attributes: ['username']
+        attributes: ["username"],
       },
       {
         // comment data not appearing in Insomnia ???
         model: Comment,
-        attributes: ['id', 'comment_text', 'post_id', 'user_id', 'created_at'],
+        attributes: ["id", "comment_text", "post_id", "user_id", "created_at"],
         include: {
           model: User,
-          attributes: ['username']
-        }
-      }
-    ]
+          attributes: ["username"],
+        },
+      },
+    ],
   })
-    .then(dbPostData => res.json(dbPostData))
-    .catch(err => {
+    .then((dbPostData) => res.json(dbPostData))
+    .catch((err) => {
       console.log(err);
       res.status(500).json(err);
     });
 });
 // get one post
-router.get('/:id', (req, res) => {
+router.get("/:id", (req, res) => {
   Post.findOne({
     where: {
-      id: req.params.id
+      id: req.params.id,
     },
-    attributes: [
-      'id',
-      'content',
-      'title',
-      'created_at'
-    ],
+    attributes: ["id", "content", "title", "created_at"],
     include: [
       {
         model: User,
-        attributes: ['username']
+        attributes: ["username"],
       },
       {
         model: Comment,
-        attributes: ['id', 'comment_text', 'post_id', 'user_id', 'created_at'],
+        attributes: ["id", "comment_text", "post_id", "user_id", "created_at"],
         include: {
           model: User,
-          attributes: ['username']
-        }
-      }
-    ]
+          attributes: ["username"],
+        },
+      },
+    ],
   })
-    .then(dbPostData => {
+    .then((dbPostData) => {
       if (!dbPostData) {
-        res.status(404).json({ message: 'No blog post found with this id' });
+        res.status(404).json({ message: "No blog post found with this id" });
         return;
       }
       res.json(dbPostData);
     })
-    .catch(err => {
+    .catch((err) => {
       console.log(err);
       res.status(500).json(err);
     });
 });
 
 // create a post
-  // expects {title: 'My second blog post', content: 'bla bla blah', user_id: 1}
-router.post('/', withAuth, (req, res) => {
+// expects {title: 'My second blog post', content: 'bla bla blah', user_id: 1}
+router.post("/", withAuth, (req, res) => {
   Post.create({
     title: req.body.title,
     content: req.body.content,
-    user_id: req.session.user_id
+    user_id: req.session.user_id,
   })
-    .then(dbPostData => res.json(dbPostData))
-    .catch(err => {
+    .then((dbPostData) => res.json(dbPostData))
+    .catch((err) => {
       console.log(err);
       res.status(500).json(err);
     });
@@ -92,7 +82,7 @@ router.post('/', withAuth, (req, res) => {
 
 // tested in insomnia- works without authority
 // update a post title or text
-router.put('/:id', withAuth, (req, res) => {
+router.put("/:id", withAuth, (req, res) => {
   Post.update(
     {
       title: req.body.title,
@@ -100,38 +90,38 @@ router.put('/:id', withAuth, (req, res) => {
     },
     {
       where: {
-        id: req.params.id
-      }
+        id: req.params.id,
+      },
     }
   )
-    .then(dbPostData => {
+    .then((dbPostData) => {
       if (!dbPostData) {
-        res.status(404).json({ message: 'No blog post found with this id' });
+        res.status(404).json({ message: "No blog post found with this id" });
         return;
       }
       res.json(dbPostData);
     })
-    .catch(err => {
+    .catch((err) => {
       console.log(err);
       res.status(500).json(err);
     });
 });
 // delete a post
-router.delete('/:id', withAuth, (req, res) => {
-  console.log('id', req.params.id);
+router.delete("/:id", withAuth, (req, res) => {
+  console.log("id", req.params.id);
   Post.destroy({
     where: {
-      id: req.params.id
-    }
+      id: req.params.id,
+    },
   })
-    .then(dbPostData => {
+    .then((dbPostData) => {
       if (!dbPostData) {
-        res.status(404).json({ message: 'No blog post found with this id' });
+        res.status(404).json({ message: "No blog post found with this id" });
         return;
       }
       res.json(dbPostData);
     })
-    .catch(err => {
+    .catch((err) => {
       console.log(err);
       res.status(500).json(err);
     });
